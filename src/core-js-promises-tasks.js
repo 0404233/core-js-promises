@@ -141,15 +141,14 @@ function getAllResult(promises) {
  * [promise1, promise4, promise3] => Promise.resolved('104030')
  * [promise1, promise4, promise3, promise2] => Promise.resolved('10403020')
  */
-function queuPromises(promises) {
-  if (promises.length === 0) {
-    return Promise.resolve('');
-  }
-  return promises[0].then((value) => {
-    return queuPromises(promises.slice(1)).then((value1) => {
-      return value + value1;
+function queuePromises(promises) {
+  return promises.reduce((acc, promise) => {
+    return acc.then((result) => {
+      return promise.then((value) => {
+        return result + value;
+      });
     });
-  });
+  }, Promise.resolve(''));
 }
 
 module.exports = {
@@ -159,5 +158,5 @@ module.exports = {
   getFirstPromiseResult,
   getAllOrNothing,
   getAllResult,
-  queuPromises,
+  queuePromises,
 };
