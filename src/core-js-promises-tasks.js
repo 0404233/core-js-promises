@@ -141,11 +141,11 @@ function getAllResult(promises) {
  * [promise1, promise4, promise3] => Promise.resolved('104030')
  * [promise1, promise4, promise3, promise2] => Promise.resolved('10403020')
  */
-function queuePromises(promises) {
-  return promises.reduce((acc, promise) => {
-    return acc.then((result) => {
-      return promise.then((value) => {
-        return result + value;
+function queuePromises(promiseList) {
+  return promiseList.reduce((previousPromise, currentPromise) => {
+    return previousPromise.then((accumulatedResult) => {
+      return currentPromise.then((currentValue) => {
+        return accumulatedResult + currentValue;
       });
     });
   }, Promise.resolve(''));
